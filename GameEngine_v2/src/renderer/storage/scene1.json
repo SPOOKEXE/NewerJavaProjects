@@ -1,0 +1,50 @@
+{ 
+	"worlds": [ 
+		{ 
+			
+			"name": "world_1",
+			"enabled": true,
+			
+			"cameras": [ 
+				{ 
+					"name": "camera_1",
+					"position": [ 40, 0, 0 ],
+					"direction": [ -1, 0, 0 ],
+					"pipeline": "BasicShader"
+				},
+				{ 
+					"name": "camera_2",
+					"position": [ -40, 0, 0 ],
+					"direction": [ 1, 0, 0 ],
+					"pipeline": "BasicShader"
+				}
+			],
+			
+			"objects": [ 
+				{
+					"name": "square_1",
+					"shape": "cube",
+					"size": 30,
+					"position": [ 0, 0, 0 ],
+					"rotation": [ 0.5, 0.5, 0 ]
+				}
+			],
+			
+			"interfaces": [
+				{ 
+					"type": "Viewport",
+					"size": [ 600, 600 ],
+					"resolution": [ 1280, 720 ],
+					"camera": "camera_1"
+				},
+				{ 
+					"type": "Viewport",
+					"size": [ 600, 600 ],
+					"resolution": [ 1280, 720 ],
+					"camera": "camera_2"
+				}
+			]
+			
+		}
+	]
+}

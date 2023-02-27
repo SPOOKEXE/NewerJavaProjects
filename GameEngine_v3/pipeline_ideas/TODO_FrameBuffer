@@ -1,0 +1,31 @@
+
+// Render Frame System //
+BufferedImage currentFrame;
+BufferedImage nextFrame;
+boolean swapReady;
+
+//////////////////////////////////
+
+MODE: await frame (AF)
+
+wait until swapReady;
+	- set current frame to next frame
+	- set swapReady to false
+	- start the render process for nextFrame
+	- repeat
+
+when rendering;
+- render currentFrame
+
+//////////////////////////////////
+
+MODE: layer busy overlay (LBO)
+
+start the render process for nextFrame
+	- wait until render finished
+	- set currentFrame to nextFrame
+	- repeat
+
+when rendering;
+- render currentFrame
+- render nextFrame on top of currentFrame

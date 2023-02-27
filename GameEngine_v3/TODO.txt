@@ -1,0 +1,32 @@
+
+
+1. Implement a basic pixel ray render
+
+1. Fix triangle intersection
+2. Pipeline System for rendering (abstraction)
+
+
+3. Fix Multi-Threading (thread pool implementation) (https://www.baeldung.com/thread-pool-java-and-guava)
+4. Lights + Shadows
+5. Textures / UV
+
+
+
+
+
+// BASE
+https://github.com/Bash-09/RayTracer/blob/master/RayTracer/src/geometry/BoundingBox.java
+https://github.com/Bash-09/RayTracer/tree/master/RayTracer/src/geometry
+https://github.com/Bash-09/RayTracer/blob/master/RayTracer/src/materials/Material.java
+
+https://github.com/Bash-09/RayTracer/tree/master/RayTracer/src/renderer
+https://github.com/Bash-09/RayTracer/tree/master/RayTracer/src/samplers
+
+// EXTRA
+https://github.com/Bash-09/RayTracer/blob/master/RayTracer/src/lights/Light.java
+https://github.com/Bash-09/RayTracer/blob/master/RayTracer/src/lights/DirectionalLight.java
+
+https://github.com/Bash-09/RayTracer/blob/master/RayTracer/src/geometry/ErrorMesh.java
+
+// SOURCE
+https://github.com/Bash-09/RayTracer/tree/master/RayTracer/src

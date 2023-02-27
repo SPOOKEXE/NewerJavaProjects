@@ -1,0 +1,14 @@
+
+BaseDisplay Class
+- BaseRenderer
+- Display
+
+BaseRenderer Class
+- IWorld
+- ICamera
+
+BaseDisplay.setRenderer(BaseRenderer)
+
+-- during update
+BaseRenderer.update() // update all renderers
+BaseDisplay.draw() // update all displays (buffered images get drawn)
