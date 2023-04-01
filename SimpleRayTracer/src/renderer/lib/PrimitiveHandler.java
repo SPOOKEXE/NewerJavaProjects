@@ -1,0 +1,39 @@
+package renderer.lib;
+
+import java.util.ArrayList;
+
+public class PrimitiveHandler {
+
+	// Fields //
+	public ArrayList<BasePrimitive> primitives;
+	
+	// Constructors // 
+	public PrimitiveHandler() {
+		this.primitives = new ArrayList<BasePrimitive>();
+	}
+	
+	// Methods //
+	public void clear() {
+		this.primitives.clear();
+	}
+	
+	public void add( BasePrimitive prim ) {
+		this.primitives.add(prim);
+	}
+	
+	public HitResult FindClosestIntersect(Ray ray, float t_min, float t_max) {
+		HitResult closest = null;
+	    float closest_max = t_max;
+
+	    for (BasePrimitive object : this.primitives) {
+	    	HitResult result = object.RayIntersect(ray, t_min, closest_max);
+	        if (result != null) {
+	        	closest_max = result.t;
+	        	closest = result;
+	        }
+	    }
+	    
+	    return closest;
+	}
+	
+}
