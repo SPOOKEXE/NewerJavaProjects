@@ -1,7 +1,5 @@
 package renderer.math;
 
-import java.awt.Color;
-
 public class Utility {
 
 	public static float INFINITY = Float.POSITIVE_INFINITY;
@@ -56,7 +54,17 @@ public class Utility {
 	public static Vector3 randomColorVec() {
 		return new Vector3( Utility.random_float(), Utility.random_float(), Utility.random_float() );
 	}
+	
 	public static Vector3 randomColorVec(float min, float max) {
 		return new Vector3( Utility.random_float(min, max), Utility.random_float(min, max), Utility.random_float(min, max) );
 	}
+	
+	public static float sumFloats(float[] floatz) {
+    	float sum = 0f;
+    	for (int i = 0; i < floatz.length; i++) {
+    		sum += floatz[i];
+    	}
+    	return sum;
+    }
+
 }

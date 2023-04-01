@@ -1,0 +1,6 @@
+
+Before doing any math-heavy checks for ray intersections on circles;
+- FOV check for each circle
+- Bounding Box Check for each circle
+and then ray intersection check
+

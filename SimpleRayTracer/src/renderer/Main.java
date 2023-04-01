@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,6 +25,8 @@ import renderer.material.MaterialReflectionData;
 import renderer.material.MetalMaterial;
 import renderer.math.Utility;
 import renderer.math.Vector3;
+import renderer.rendering.Pipeline;
+import renderer.rendering.RendererData;
 
 public class Main {
 
@@ -41,11 +46,7 @@ public class Main {
         b = (float) Math.sqrt(scale * b);
 
         // Write the translated [0,255] value of each color component.
-        return new Color(
-    		r < 0f ? 0f : (r > 0.999f ? 0.999f : r),
-			g < 0f ? 0f : (g > 0.999f ? 0.999f : g),
-			b < 0f ? 0f : (b > 0.999f ? 0.999f : b)
-        );
+        return new Color( Utility.clamp(r, 0, 0.999f), Utility.clamp(g, 0, 0.999f), Utility.clamp(b, 0, 0.999f) );
     }
     
     public static Vector3 getRayColorVector( Ray ray, PrimitiveHandler world, int depth ) {
@@ -72,11 +73,9 @@ public class Main {
         for (int a = -11; a < 11; a++) {
             for (int b = -11; b < 11; b++) {
                 float choose_mat = Utility.random_float();
-                Vector3 center = new Vector3(a + 0.9f * Utility.random_float(), 0.2, b + 0.9f * Utility.random_float());
-
+                Vector3 center = new Vector3(a + 0.9f * Utility.random_float(), 0.2f, b + 0.9f * Utility.random_float());
                 if ((center.sub(new Vector3(4, 0.2f, 0))).mag() > 0.9f) {
                     BaseMaterial sphere_material;
-
                     if (choose_mat < 0.8f) {
                         // diffuse
                         Vector3 albedo = Utility.randomColorVec();
@@ -127,22 +126,23 @@ public class Main {
     	
     	// Image
     	float aspect_ratio = 3.0f / 2.0f;
-    	int image_width = 1200;
+    	int image_width = 600;
     	int image_height = (int) (image_width / aspect_ratio);
-    	int samples_per_pixel = 500;
-    	int max_depth = 50;
-    	
+
     	BufferedImage bufferImg = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_RGB);
     	
     	// Display
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
         
-        JProgressBar progressBar = new JProgressBar(0, image_width * image_height);
+        JProgressBar progressBar = new JProgressBar(0, image_width);
     	progressBar.setValue(0);
     	progressBar.setStringPainted(true);
         Component progressComp = frame.getContentPane().add(progressBar);
         
+        JLabel image_label = new JLabel(new ImageIcon(bufferImg));
+        frame.getContentPane().add(image_label);
+
         frame.pack();
         frame.setVisible(true);
         
@@ -158,39 +158,35 @@ public class Main {
         float aperture = 0.1f;
         
     	Camera camera = new Camera(origin, lookAt, upVec, 20.0f, aspect_ratio, aperture, dist_to_focus);
-    	
+
     	// Render
-    	int counter = 0;
-		for (int j = image_height - 1; j >= 0; --j) {
-        	for (int i = 0; i <= image_width - 1; ++i) {
-        		
-        		// System.out.println(i + " - " + j);
-        		counter += 1;
-        		progressBar.setValue(counter);
-        		
-        		float r = 0.0f;
-        		float g = 0.0f;
-        		float b = 0.0f;
-        		
-        		for (int s = 0; s < samples_per_pixel; ++s) {
-            		float u = (float) (i + Utility.random_float()) / (float)(image_width-1);
-            		float v = (float) (j + Utility.random_float()) / (float)(image_height-1);
-            		Ray ray = camera.getRay(u, v);
-            		Vector3 rayColor = getRayColorVector(ray, world, max_depth);
-            		r += rayColor.x;
-            		g += rayColor.y;
-            		b += rayColor.z;
-            	}
-        		
-        		Color pixel_color = Main.resolveColor(r, g, b, samples_per_pixel);
-        		bufferImg.setRGB(i, image_height-1-j, pixel_color.getRGB());
-        	}
-        }
-        
-        System.out.println("done");
+    	int max_depth = 10;
+    	int samples_per_pixel = 50;
+    	
+    	RendererData renderData = new RendererData( world, camera, samples_per_pixel, image_height, image_width, max_depth);
+    	Color[][] pixel_columns = Pipeline.DistributeRender(renderData, progressBar, bufferImg, image_label);
+    	for (int widthIndex = 0; widthIndex < image_width - 1; widthIndex++) {
+    		Color[] columnPixels = pixel_columns[widthIndex];
+    		for (int heightIndex = 0; heightIndex < image_height - 1; heightIndex++) {
+    			Color pixel_color = columnPixels[heightIndex];
+    			if (pixel_color == null) continue;
+    			bufferImg.setRGB(widthIndex, heightIndex, pixel_color.getRGB());
+    		}
+    	}
+    	
+    	// preview in frame
         frame.getContentPane().remove( progressComp );
-        frame.getContentPane().add(new JLabel(new ImageIcon(bufferImg)));
         frame.pack();
+        
+        // output image
+        try {
+            File outputfile = new File("saved.png");
+            ImageIO.write(bufferImg, "png", outputfile);
+            System.out.println("File saved at " + outputfile.getAbsolutePath());
+        } catch (IOException e) {
+        	System.out.println("Failed to save the image.");
+        	e.printStackTrace();
+        }
     }
 
 }
