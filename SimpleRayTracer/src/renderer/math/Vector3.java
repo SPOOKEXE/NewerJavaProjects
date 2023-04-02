@@ -78,6 +78,10 @@ public class Vector3 {
 		return new Vector3(this.x + a, this.y + a, this.z + a);
 	}
 
+	public Vector3 sub(float a) {
+		return new Vector3(this.x - a, this.y - a, this.z - a);
+	}
+	
 	public Vector3 sub(Vector3 other) {
 		return new Vector3(this.x - other.x, this.y - other.y, this.z - other.z);
 	}

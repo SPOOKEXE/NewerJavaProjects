@@ -66,5 +66,48 @@ public class Utility {
     	}
     	return sum;
     }
+	
+	public static Vector3[] LineIntersectAxisAlignedBox( Vector3 rayOrigin, Vector3 rayDirection, Vector3 boxMin, Vector3 boxMax ) {
+		Vector3 min = boxMin.sub(rayOrigin);
+		Vector3 max = boxMax.sub(rayOrigin);
+		float near = Float.MIN_VALUE;
+		float far = Float.MAX_VALUE;
+		
+		// X
+		float t1 = min.x / rayDirection.x;
+		float t2 = max.x / rayDirection.x;
+		float tMin = Math.min(t1, t2);
+		float tMax = Math.max(t1, t2);
+		
+		if (tMin > near) { near = tMin; }
+		if (tMax < far) { far = tMax; }
+		if (near > far || far < 0) {
+			return null;
+		}
+	
+		// Y
+		t1 = min.y / rayDirection.y;
+		t2 = max.y / rayDirection.y;
+		tMin = Math.min(t1, t2);
+		tMax = Math.max(t1, t2);
+		if (tMin > near) { near = tMin; }
+		if (tMax < far) { far = tMax; }
+		if (near > far || far < 0) {
+			return null;
+		}
+		
+		// Z
+		t1 = min.z / rayDirection.z;
+		t2 = max.z / rayDirection.z;
+		tMin = Math.min(t1, t2);
+		tMax = Math.max(t1, t2);
+		if (tMin > near) { near = tMin; }
+		if (tMax < far) { far = tMax; }
+		if (near > far || far < 0) {
+			return null;
+		}
+
+		return new Vector3[] { rayOrigin.add(rayDirection.mult(near)), rayOrigin.add(rayDirection.mult(far)) };
+	}
 
 }

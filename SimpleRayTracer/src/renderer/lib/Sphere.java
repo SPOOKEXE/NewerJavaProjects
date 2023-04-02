@@ -6,27 +6,31 @@ import renderer.math.Vector3;
 public class Sphere extends BasePrimitive {
 
 	// Fields //
-	public Vector3 center;
 	public float radius;
 	
 	// Constructors //
 	public Sphere() { }
-	public Sphere(Vector3 center, float radius) {
-		this.center = center;
+	public Sphere(Vector3 position, float radius) {
+		this.position = position;
 		this.radius = radius;
 	}
-	public Sphere(Vector3 center, float radius, BaseMaterial material) {
-		this.center = center;
+	public Sphere(Vector3 position, float radius, BaseMaterial material) {
+		this.position = position;
 		this.radius = radius;
 		this.material = material;
 	}
 	
 	// Methods //
+	@Override
+	public boolean IntersectsBounds( Ray ray ) {
+		return true;
+	}
+	
 	
 	@Override
 	public HitResult RayIntersect( Ray ray, float t_min, float t_max ) {
 		
-		Vector3 oc = ray.origin.sub( this.center );
+		Vector3 oc = ray.origin.sub( this.position );
 
 		float a = ray.direction.mag_sqred();
 		float half_b = oc.dot(ray.direction);
@@ -49,7 +53,7 @@ public class Sphere extends BasePrimitive {
 	    }
 
 	    Vector3 position = ray.towardsDirection(root);
-	    Vector3 outward_normal = ( position.sub(this.center) ).div(this.radius);
+	    Vector3 outward_normal = ( position.sub(this.position) ).div(this.radius);
 
 	    HitResult result = new HitResult(position, null, root);
 	    result.setFaceNormal(ray, outward_normal);

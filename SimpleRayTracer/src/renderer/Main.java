@@ -126,7 +126,7 @@ public class Main {
     	
     	// Image
     	float aspect_ratio = 3.0f / 2.0f;
-    	int image_width = 600;
+    	int image_width = 1200;
     	int image_height = (int) (image_width / aspect_ratio);
 
     	BufferedImage bufferImg = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_RGB);
@@ -151,7 +151,7 @@ public class Main {
         //PrimitiveHandler world = Main.testScene();
     	
     	// Camera
-        Vector3 origin = new Vector3(13, 2, 3);
+        Vector3 origin = new Vector3(16, 2.2f, 3.2f);
         Vector3 lookAt = new Vector3(0, 0, 0);
         Vector3 upVec = new Vector3(0, 1, 0);
         float dist_to_focus = 10.0f;
@@ -160,8 +160,8 @@ public class Main {
     	Camera camera = new Camera(origin, lookAt, upVec, 20.0f, aspect_ratio, aperture, dist_to_focus);
 
     	// Render
-    	int max_depth = 10;
-    	int samples_per_pixel = 50;
+    	int max_depth = 50;
+    	int samples_per_pixel = 200;
     	
     	RendererData renderData = new RendererData( world, camera, samples_per_pixel, image_height, image_width, max_depth);
     	Color[][] pixel_columns = Pipeline.DistributeRender(renderData, progressBar, bufferImg, image_label);
@@ -180,7 +180,7 @@ public class Main {
         
         // output image
         try {
-            File outputfile = new File("saved.png");
+            File outputfile = new File("saved_" + renderData.image_width + "_" + renderData.image_height + "_" + samples_per_pixel + "_" + max_depth + ".png");
             ImageIO.write(bufferImg, "png", outputfile);
             System.out.println("File saved at " + outputfile.getAbsolutePath());
         } catch (IOException e) {
