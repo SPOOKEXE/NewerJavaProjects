@@ -33,6 +33,9 @@ public class BaseMaterial implements IMaterial {
 		this.reflectFactor = 0;
 		this.diffuseFactor = 0;
 		this.specularFactor = 0;
+	}
+	
+	public void scatter(Ray ray) {
 		
 	}
 }
