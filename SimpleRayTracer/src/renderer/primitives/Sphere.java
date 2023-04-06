@@ -1,5 +1,8 @@
-package renderer.lib;
+package renderer.primitives;
 
+import renderer.boundbox.BoundingBox;
+import renderer.lib.HitResult;
+import renderer.lib.Ray;
 import renderer.material.BaseMaterial;
 import renderer.math.Vector3;
 
@@ -22,10 +25,11 @@ public class Sphere extends BasePrimitive {
 	
 	// Methods //
 	@Override
-	public boolean IntersectsBounds( Ray ray ) {
-		return true;
+	public void GenerateBoundingBox() {
+		Vector3 minVec = this.position.sub( new Vector3(this.radius, this.radius, this.radius) );
+		Vector3 maxVec = this.position.add( new Vector3(this.radius, this.radius, this.radius) );
+		this.bounds = new BoundingBox(minVec, maxVec);
 	}
-	
 	
 	@Override
 	public HitResult RayIntersect( Ray ray, float t_min, float t_max ) {

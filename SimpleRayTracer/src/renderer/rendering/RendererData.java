@@ -1,7 +1,7 @@
 package renderer.rendering;
 
 import renderer.lib.Camera;
-import renderer.lib.PrimitiveHandler;
+import renderer.primitives.PrimitiveHandler;
 
 public class RendererData {
 	// Fields //

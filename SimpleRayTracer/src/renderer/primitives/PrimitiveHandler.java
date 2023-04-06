@@ -1,7 +1,9 @@
-package renderer.lib;
+package renderer.primitives;
 
 import java.util.ArrayList;
 
+import renderer.lib.HitResult;
+import renderer.lib.Ray;
 import renderer.math.Vector3;
 
 public class PrimitiveHandler {
@@ -39,13 +41,7 @@ public class PrimitiveHandler {
 	    float closest_max = t_max;
 
 	    for (BasePrimitive object : this.primitives) {
-	    	
-//	    	Vector3 targetDir = object.position.sub(ray.origin);
-//	    	float angleToObject = targetDir.dot(ray.direction);
-//	    	if (!(angleToObject >= -90 && angleToObject <= 90))
-//	    		continue;
-	    	
-//	    	if (!object.IntersectsBounds( ray )) {
+//	    	if (!object.IsRayIntersecting( ray )) {
 //	    		continue;
 //	    	}
 	    	

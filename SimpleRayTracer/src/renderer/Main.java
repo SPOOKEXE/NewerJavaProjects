@@ -15,9 +15,7 @@ import javax.swing.JProgressBar;
 
 import renderer.lib.Camera;
 import renderer.lib.HitResult;
-import renderer.lib.PrimitiveHandler;
 import renderer.lib.Ray;
-import renderer.lib.Sphere;
 import renderer.material.BaseMaterial;
 import renderer.material.DielectricMaterial;
 import renderer.material.LambertianMaterial;
@@ -25,6 +23,8 @@ import renderer.material.MaterialReflectionData;
 import renderer.material.MetalMaterial;
 import renderer.math.Utility;
 import renderer.math.Vector3;
+import renderer.primitives.PrimitiveHandler;
+import renderer.primitives.Sphere;
 import renderer.rendering.Pipeline;
 import renderer.rendering.RendererData;
 
@@ -68,13 +68,13 @@ public class Main {
     	PrimitiveHandler world = new PrimitiveHandler();
 
         BaseMaterial ground_material = new LambertianMaterial(new Vector3(0.5f, 0.5f, 0.5f));
-        world.add(new Sphere(new Vector3(0, -1000, 0), 1000, ground_material));
+        world.add(new Sphere(new Vector3(0, -1000f, 0), 1000f, ground_material));
 
         for (int a = -11; a < 11; a++) {
             for (int b = -11; b < 11; b++) {
                 float choose_mat = Utility.random_float();
                 Vector3 center = new Vector3(a + 0.9f * Utility.random_float(), 0.2f, b + 0.9f * Utility.random_float());
-                if ((center.sub(new Vector3(4, 0.2f, 0))).mag() > 0.9f) {
+                if ((center.sub(new Vector3(4f, 0.2f, 0))).mag() > 0.9f) {
                     BaseMaterial sphere_material;
                     if (choose_mat < 0.8f) {
                         // diffuse
@@ -125,8 +125,8 @@ public class Main {
     public static void main( String[] args ) {
     	
     	// Image
-    	float aspect_ratio = 3.0f / 2.0f;
-    	int image_width = 1200;
+    	float aspect_ratio = 16.0f / 9.0f;
+    	int image_width = 1920;
     	int image_height = (int) (image_width / aspect_ratio);
 
     	BufferedImage bufferImg = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_RGB);
@@ -160,8 +160,8 @@ public class Main {
     	Camera camera = new Camera(origin, lookAt, upVec, 20.0f, aspect_ratio, aperture, dist_to_focus);
 
     	// Render
-    	int max_depth = 50;
-    	int samples_per_pixel = 200;
+    	int max_depth = 4;
+    	int samples_per_pixel = 100;
     	
     	RendererData renderData = new RendererData( world, camera, samples_per_pixel, image_height, image_width, max_depth);
     	Color[][] pixel_columns = Pipeline.DistributeRender(renderData, progressBar, bufferImg, image_label);

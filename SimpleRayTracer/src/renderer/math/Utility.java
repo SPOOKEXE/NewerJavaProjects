@@ -67,6 +67,13 @@ public class Utility {
     	return sum;
     }
 	
+	public static boolean IsPointInSphere( Vector3 point, Vector3 center, float radius ) {
+		float xc = center.x - point.x;
+		float yc = center.y - point.y;
+		float zc = center.z - point.z;
+		return (xc*xc + yc*yc + zc*zc) < (radius * radius);
+	}
+	
 	public static Vector3[] LineIntersectAxisAlignedBox( Vector3 rayOrigin, Vector3 rayDirection, Vector3 boxMin, Vector3 boxMax ) {
 		Vector3 min = boxMin.sub(rayOrigin);
 		Vector3 max = boxMax.sub(rayOrigin);

@@ -50,24 +50,19 @@ class ColumnRenderer implements Callable<ColumnRenderReturn> {
 	public ColumnRenderReturn call() {
 		Color[] colors = new Color[renderData.image_height];
 		for (int heightIndex = this.renderData.image_height - 1; heightIndex >= 0; --heightIndex) {
-    		float[] rz = new float[this.renderData.samples_per_pixel];
-    		float[] gz = new float[this.renderData.samples_per_pixel];
-    		float[] bz = new float[this.renderData.samples_per_pixel];
+    		float rz = 0f;
+    		float gz = 0f;
+    		float bz = 0f;
     		for (int s = 0; s < this.renderData.samples_per_pixel; ++s) {
         		float u = (float) (this.widthIndex + Utility.random_float()) / (float)(this.renderData.image_width-1);
         		float v = (float) (heightIndex + Utility.random_float()) / (float)(this.renderData.image_height-1);
         		Ray ray = this.renderData.camera.getRay(u, v);
         		Vector3 rayColor = Main.getRayColorVector(ray, this.renderData.world, this.renderData.max_depth);
-        		rz[s] = rayColor.x;
-        		gz[s] = rayColor.y;
-        		bz[s] = rayColor.z;
+        		rz += rayColor.x;
+        		gz += rayColor.y;
+        		bz += rayColor.z;
         	}
-    		Color pixel_color = Main.resolveColor(
-				Utility.sumFloats(rz),
-				Utility.sumFloats(gz),
-				Utility.sumFloats(bz), 
-				this.renderData.samples_per_pixel
-    		);
+    		Color pixel_color = Main.resolveColor(rz,gz,bz, this.renderData.samples_per_pixel);
     		colors[heightIndex] = pixel_color;
     	}
 		return new ColumnRenderReturn(colors, this.widthIndex);
