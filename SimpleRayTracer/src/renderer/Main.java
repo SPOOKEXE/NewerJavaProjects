@@ -126,7 +126,7 @@ public class Main {
     	
     	// Image
     	float aspect_ratio = 16.0f / 9.0f;
-    	int image_width = 1920;
+    	int image_width = 1280;
     	int image_height = (int) (image_width / aspect_ratio);
 
     	BufferedImage bufferImg = new BufferedImage(image_width, image_height, BufferedImage.TYPE_INT_RGB);
